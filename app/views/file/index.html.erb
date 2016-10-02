@@ -5,5 +5,12 @@
 <% end %>
 
 <div class="download">
-  <%= link_to fa_icon("download", class: "fa-5x"), download_file_path(@zip_id), data: { turbolinks: false } %>
+  <%= form_tag(download_file_path(@zip_id), data: { turbolinks: false }, method: :get) do %>
+    <p>
+      password: <%= text_field_tag :password, @password %>
+    </p>
+    <%= button_tag :type => "submit", :class =>"btn btn-default btn-s-md" do %>
+      <i class="fa fa-download fa-5x"></i>
+    <% end %>
+  <% end %>
 </div>
