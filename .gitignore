@@ -16,3 +16,4 @@
 !/log/.keep
 /tmp
 .tags
+.byebug_history

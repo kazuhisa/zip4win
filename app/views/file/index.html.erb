@@ -1,0 +1,9 @@
+<%= form_tag(file_index_path, class: 'dropzone', id: 'upload-dropzone') do %>
+  <div class="fallback">
+    <%= hidden_field_tag :abc, 123 %>
+  </div>
+<% end %>
+
+<div class="download">
+  <%= link_to fa_icon("download", class: "fa-5x"), download_file_path(@zip_id), data: { turbolinks: false } %>
+</div>

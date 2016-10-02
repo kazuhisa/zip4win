@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  resources :file, only: [:index, :create] do
+    member do
+      get :download
+    end
+  end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
