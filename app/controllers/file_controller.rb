@@ -28,7 +28,7 @@ class FileController < ApplicationController
     io.set_encoding(Encoding::CP932)
     buffer = Zip::OutputStream.write_buffer(io, encrypter) do |zos|
       Dir.glob(File.join("/tmp/", zip_id, "*")).each do |file_path|
-        zos.put_next_entry File.basename(file_path).encode("Shift_JIS")
+        zos.put_next_entry File.basename(file_path).encode("CP932", invalid: :replace, undef: :replace, replace: "■")
         open(file_path, "rb") do |f|
           zos.write f.read
         end
