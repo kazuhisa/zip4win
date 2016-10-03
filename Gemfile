@@ -35,6 +35,7 @@ gem 'dropzonejs-rails'
 gem 'gon'
 gem "font-awesome-rails"
 gem "rubyzip"
+gem "puma"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

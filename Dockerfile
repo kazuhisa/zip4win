@@ -44,5 +44,5 @@ RUN cd /zip4win && bundle install --without development test
 RUN cd /zip4win && bin/rake assets:precompile
 
 # アプリケーションサーバー起動
-CMD cd /zip4win && bin/rails s -e production
+CMD cd /zip4win && RAILS_ENV=production bundle exec puma
 
