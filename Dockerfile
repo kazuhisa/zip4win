@@ -45,5 +45,5 @@ RUN cd /zip4win && bin/rake assets:precompile
 
 # アプリケーションサーバー起動
 EXPOSE 9292
-CMD cd /zip4win && RAILS_ENV=production bundle exec puma
+CMD cd /zip4win && bundle exec puma -e production
 
