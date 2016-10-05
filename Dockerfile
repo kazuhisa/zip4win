@@ -1,38 +1,27 @@
 # zip4win Docker files
 
-FROM centos:centos6
+FROM ruby:2.3-alpine
 MAINTAINER <ak.hisashi@gmail.com>
 
-# タイムゾーンの変更
-RUN cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
-COPY clock.txt /etc/sysconfig/clock
-RUN chmod 0644 /etc/sysconfig/clock
+RUN apk --update add tzdata && \
+    cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime && \
+    rm -rf /var/cache/apk/*
 
-# Perform updates
-RUN yum -y update; yum clean all
-RUN yum -y install \
-openssl-devel \
-readline-devel \
-sqlite-devel \
-gcc \
-gcc-c++ \
-kernel-devel \
-make \
-wget \
-ping \
-sudo \
-git \
-tar \
-ImageMagick-devel
+ENV BUILD_PACKAGES="curl-dev build-base openssh" \
+    DEV_PACKAGES="libxml2 libxml2-dev libxslt libxslt-dev \
+                  sqlite-dev git nodejs"
 
-# Rubyのインストール
-RUN wget https://cache.ruby-lang.org/pub/ruby/2.3/ruby-2.3.1.tar.gz && \
-tar xvf ruby-2.3.1.tar.gz && \
-cd ruby-2.3.1 && \
-./configure && \
-make && \
-make install && \
-gem install bundler
+RUN \
+  apk --update --upgrade add $BUILD_PACKAGES $DEV_PACKAGES && \
+  rm /var/cache/apk/*
+
+RUN \
+  gem install -N nokogiri && \
+  echo 'gem: --no-document' >> ~/.gemrc && \
+  cp ~/.gemrc /etc/gemrc && \
+  chmod uog+r /etc/gemrc && \
+  rm -rf /usr/lib/lib/ruby/gems/*/cache/* && \
+  rm -rf ~/.gem
 
 # git clone
 RUN git clone https://github.com/kazuhisa/zip4win.git
@@ -43,7 +32,7 @@ RUN cd /zip4win && bundle install --without development test
 # assets precompile
 RUN cd /zip4win && bin/rake assets:precompile
 
-# アプリケーションサーバー起動
+# start server
 EXPOSE 9292
 CMD cd /zip4win && bundle exec puma -e production
 
