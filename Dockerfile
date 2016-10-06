@@ -1,6 +1,6 @@
 # zip4win Docker files
 
-FROM ruby:2.3-alpine
+FROM ruby:2.3.1-alpine
 MAINTAINER <ak.hisashi@gmail.com>
 
 RUN apk --update add tzdata && \
