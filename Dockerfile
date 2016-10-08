@@ -35,4 +35,3 @@ RUN cd /zip4win && bin/rake assets:precompile
 # start server
 EXPOSE 9292
 CMD cd /zip4win && bundle exec puma -e production
-
