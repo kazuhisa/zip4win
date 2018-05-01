@@ -1,6 +1,6 @@
 # zip4win Docker files
 
-FROM ruby:2.3.1-alpine
+FROM ruby:2.3.7-alpine
 MAINTAINER <ak.hisashi@gmail.com>
 
 RUN apk --update add tzdata && \
@@ -8,20 +8,14 @@ RUN apk --update add tzdata && \
     rm -rf /var/cache/apk/*
 
 ENV BUILD_PACKAGES="curl-dev build-base openssh" \
-    DEV_PACKAGES="libxml2 libxml2-dev libxslt libxslt-dev \
+    DEV_PACKAGES="build-base libxml2-dev libxslt libxslt-dev \
                   sqlite-dev git nodejs"
 
 RUN \
   apk --update --upgrade add $BUILD_PACKAGES $DEV_PACKAGES && \
   rm /var/cache/apk/*
 
-RUN \
-  gem install -N nokogiri && \
-  echo 'gem: --no-document' >> ~/.gemrc && \
-  cp ~/.gemrc /etc/gemrc && \
-  chmod uog+r /etc/gemrc && \
-  rm -rf /usr/lib/lib/ruby/gems/*/cache/* && \
-  rm -rf ~/.gem
+RUN bundle config build.nokogiri --use-system-libraries
 
 # git clone
 RUN git clone https://github.com/kazuhisa/zip4win.git
